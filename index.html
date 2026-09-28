@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SMS Opt-In Confirmation</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      max-width: 500px;
+      width: 100%;
+      padding: 40px;
+    }
+    h1 { color: #333; margin-bottom: 10px; font-size: 24px; }
+    .subtitle { color: #666; margin-bottom: 30px; font-size: 14px; }
+    .form-group {
+      margin: 25px 0;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 5px;
+      border-left: 4px solid #667eea;
+    }
+    label {
+      display: flex;
+      align-items: flex-start;
+      cursor: pointer;
+      color: #333;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    label[for="phoneNumber"] {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    input[type="checkbox"] {
+      margin-right: 12px;
+      margin-top: 2px;
+      min-width: 20px;
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+    }
+    .links {
+      font-size: 12px;
+      color: #666;
+      margin: 20px 0;
+      text-align: center;
+      padding: 15px;
+      background: #f0f0f0;
+      border-radius: 5px;
+    }
+    .links a {
+      color: #667eea;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+    .links a:hover {
+      text-decoration: underline;
+    }
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 30px;
+    }
+    button {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-confirm {
+      background: #667eea;
+      color: white;
+    }
+    .btn-confirm:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    .btn-confirm:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-decline {
+      background: #e0e0e0;
+      color: #333;
+    }
+    .btn-decline:hover {
+      background: #d0d0d0;
+    }
+    .message {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      text-align: center;
+      display: none;
+    }
+    .message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      display: block;
+    }
+    .message.declined {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Confirm SMS Opt-In</h1>
+    <p class="subtitle">You're receiving this email because you requested SMS notifications.</p>
+
+    <form id="optInForm">
+      <div class="form-group">
+        <label for="phoneNumber">Phone Number *</label>
+        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="+1 (555) 123-4567" required style="width: 100%; padding: 8px; margin: 8px 0 15px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="consentCheckbox" required>
+          <span>I consent to receive SMS messages at the phone number above about account security alerts and notifications. Standard message rates apply.</span>
+        </label>
+      </div>
+
+      <div class="links">
+        <strong>Learn More:</strong><br>
+        <a href="privacy-policy.html" target="_blank">Privacy Policy</a> |
+        <a href="terms-of-service.html" target="_blank">Terms of Service</a>
+      </div>
+
+      <div class="buttons">
+        <button type="submit" class="btn-confirm" id="confirmBtn">CONFIRM OPT-IN</button>
+        <button type="button" class="btn-decline" onclick="declineOptIn()">DECLINE</button>
+      </div>
+    </form>
+
+    <div id="successMessage" class="message success">
+      ✓ SMS notifications confirmed! Check your email for confirmation.
+    </div>
+
+    <div id="declinedMessage" class="message declined">
+      ✗ Opt-in cancelled. You won't receive SMS notifications.
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('optInForm');
+    const confirmBtn = document.getElementById('confirmBtn');
+    const consentCheckbox = document.getElementById('consentCheckbox');
+    const successMessage = document.getElementById('successMessage');
+    const declinedMessage = document.getElementById('declinedMessage');
+
+    // Enable/disable confirm button based on checkbox
+    consentCheckbox.addEventListener('change', function() {
+      confirmBtn.disabled = !this.checked;
+    });
+
+    confirmBtn.disabled = true;
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (consentCheckbox.checked) {
+        form.style.display = 'none';
+        successMessage.style.display = 'block';
+      }
+    });
+
+    function declineOptIn() {
+      form.style.display = 'none';
+      declinedMessage.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
